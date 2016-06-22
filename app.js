@@ -39,10 +39,19 @@
             for(var i = 0, j = arr.length; i < j; i++){
 
                 var inputName = arr[i].name;
+                var event = arr[i].event || 'input';
                 var inputRules = arr[i].rules;
                 var inputMessages = arr[i].messages;
                 var inputIgnore = arr[i].ignore;
 
+
+
+
+
+
+                this.myForm[inputName].addEventListener(event,function(){
+
+                },false)
 
 
                 //循环出每条验证规则
@@ -85,89 +94,29 @@
                     }
 
                 }
-            }
 
-            console.log(this.allErrorRules)
-            console.log(this.allErrorMessages)
-
+                //判断这个input是否通过验证
+                var inValida = this.allErrorRules.hasOwnProperty(inputName);
 
 
 
-/*            var inputEle = this.myForm[name] || '';
+                //创建错误信息元素
+                var errorEle = document.createElement('span');
+                errorEle.className = 'errorMessage ' + inputName + '_errorMessage';
 
-            //存放取到的验证规则和方法
-            var allRule = [], allMessage = [], errorRule=[], errorMessage=[], oneValid;
+                if(inValida){
+                    errorEle.innerHTML = this.allErrorMessages[inputName][0];
+                }
 
-            //如果input元素不存在，停止验证
-            if(inputEle === ''){
-                return ;
-            }
 
-            //循环出验证规则和信息
-            for(var i=0; i < obj.rules.length; i++){
-                allRule[i] = obj.rules[i];
-                allMessage[i] = obj.messages[i];
-                var result;
-
-                //当规则不是字符串(是正则)时
-                if(typeof allRule[i] != 'string'){
-                    result =  allRule[i].test(inputEle.value);
-                    if(result === false){
-                        errorRule.push(allRule[i]);
-                        errorMessage.push(allMessage[i]);
-
-                    }
-                }else{     //当规则不是正则时
-
-                    var ruleArr = /(\w+)/ig.exec(allRule[i]);
-
-                    //不带参数的规则处理
-                    if(ruleArr[1] === ruleArr.input){
-                         result = this.testHook[ruleArr.input](inputEle);
-                         if(result === false){
-                             errorRule.push(allRule[i]);
-                             errorMessage.push(allMessage[i]);
-                         }
-
-                    }else{
-                        //带参数的规则处理，如：maxLength
-                        ruleArr = /(\w+)\((\d+)/ig.exec(allRule[i]);
-                        result = this.testHook[ruleArr[1]](inputEle, ruleArr[2]);
-                        if(result === false){
-                            errorRule.push(allRule[i]);
-                            errorMessage.push(allMessage[i]);
-                        }
-                    }
-
+                //默认将错误元素插入input后面
+                if(inputEle.nextSibling){
+                    inputEle.parentNode.insertBefore(errorEle,inputEle.nextSibling)
+                }else{
+                    inputEle.parentNode.appendChild(errorEle)
                 }
 
             }
-
-            //只选择一条错误信息推到全局验证
-
-            oneValid = errorMessage.length === 0;
-
-            if(!oneValid){
-                this.resultErrorMessage.push(errorMessage[0])
-            }
-
-            //创建错误信息元素
-            var errorEle = document.createElement('span');
-            errorEle.className = 'errorMessage ' + name + '_errorMessage';
-            if(!oneValid){
-                errorEle.innerHTML = errorMessage[0];
-            }
-
-
-            //默认将错误元素插入input后面
-            if(inputEle.nextSibling){
-                inputEle.parentNode.insertBefore(errorEle,inputEle.nextSibling)
-            }else{
-                inputEle.parentNode.appendChild(errorEle)
-            }
-
-            //运行回调函数，将对应元素和它的错误信息传入，以便可以修改默认样式或增添样式
-            callback(inputEle, errorEle, oneValid)*/
 
         }
 
