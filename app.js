@@ -64,9 +64,9 @@
         if(opts.rules){
             for(var i = 0; i< opts.rules.length; i++){
                 if(typeof opts.rules[i] != 'string'){
-                    validateReg(el, opts.rules[i])
+                    validateReg(el, opts.rules[i], opts.message[i])
                 }else{
-                    validateString(el, opts.rules[i])
+                    validateString(el, opts.rules[i], opts.message[i])
                 }
             }
         }else if(opts.sameTo){
@@ -74,11 +74,16 @@
         }
     }
 
-    function validateReg(el, rule){
-      //console.log(rule.test(el.value))
+    function validateReg(el, rule, message){
+        if(!rule.test(el.value)){
+            insertMessage(el, message)
+
+        }else{
+            //removeMessage(el)
+        }
     }
 
-    function validateString(el, rule){
+    function validateString(el, rule, message){
 
         var result;
         var ruleArr = /(\w+)/ig.exec(rule);
@@ -86,10 +91,13 @@
 
         //不带参数的规则处理
         if(ruleArr[1] === ruleArr.input){
-            result = regItem[ruleArr.input](rule);
+            result = regItem[ruleArr.input](el);
 
             if(result === false){
+                insertMessage(el, message)
 
+            }else{
+                //removeMessage(el)
             }
 
         }else{
@@ -97,9 +105,41 @@
             ruleArr = /(\w+)\((\d+)/ig.exec(rule);
             result = regItem[ruleArr[1]](el, ruleArr[2]);
             if(result === false){
+                insertMessage(el, message)
 
+            }else{
+                //removeMessage(el)
             }
         }
+    }
+
+    function insertMessage(el, message){
+        var errorEle = document.createElement('span')
+        var parent = el.parentNode ;
+        var nodeEles = parent.getElementsByTagName('span')
+        errorEle.className = 'errorMessage ' + el.name + '_errorMessage'
+
+        if(nodeEles.length != 0){
+            for(var i = 0; i<nodeEles.length; i++){
+                if(!hasClass(nodeEles[i], 'errorMessage')){
+                    insertAfter(el, errorEle)
+                }
+            }
+
+        }else{
+            insertAfter(el, errorEle)
+        }
+        parent.getElementsByClassName('errorMessage')[0].innerHTML = message;
+
+    }
+
+    function removeMessage(el){
+        var parent = el.parentNode;
+        var errorEle = parent.getElementsByClassName('errorMessage')[0];
+        if(errorEle){
+            parent.removeChild(errorEle)
+        }
+
     }
 
 
@@ -115,6 +155,19 @@
         }
     }
 
+    function hasClass(el, oClass){
+        oClass = ' ' + oClass + ' '
+        return (' ' + el.className + ' ').indexOf(oClass) > -1
+    }
+
+    function insertAfter(el, errorEle){
+        if(el.nextSibling){
+            el.parentNode.insertBefore(errorEle, el.nextSibling)
+        }else{
+            el.parentNode.appendChild(errorEle)
+        }
+    }
+
 
 })(window);
 
@@ -126,7 +179,7 @@ var a = new validator('myForm')
 a.add({
     name:'password',
     rules:[/\d+/,'minLength(5)','required'],
-    message:['必须为数字','太短']
+    message:['必须为数字','太短','必须填']
 }).add({
     name:'confirm-password',
     sameTo:'password',
