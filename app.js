@@ -123,8 +123,11 @@
                     valiStr = validateString(el, opts.rules[i])
                 }
 
-                if(!valiReg || !valiStr){
+                if(!valiReg || !valiStr){   //验证未通过
                     insertMessage(el, opts.message[i])
+                    if(opts.callback){
+                        opts.callback(el, document.getElementsByClassName(opts.name + '_errorMessage'))
+                    }
                     return          //遇到错误就返回一定要返回，不然很可能其他条件通过，将错误信息删除了
                 }
                 if(valiReg && valiReg){
@@ -189,9 +192,10 @@
     }
 
     function removeMessage(el){
-        var parent = el.parentNode;
-        var errorEle = parent.getElementsByClassName('errorMessage')[0];
+        var parent;
+        var errorEle = document.getElementsByClassName( el.name +'_errorMessage')[0];
         if(errorEle){
+            parent = errorEle.parentNode;
             parent.removeChild(errorEle)
         }
 
@@ -251,7 +255,10 @@ var a = new validator('myForm')
 a.add({
     name:'password',
     rules:['required',/\d+/,'minLength(5)'],
-    message:['必须填','必须为数字','太短']
+    message:['必须填','必须为数字','太短'],
+    callback:function(el, errorEl){
+
+    }
 }).add({
     name:'confirm-password',
     sameTo:'password',
