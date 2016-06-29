@@ -28,9 +28,20 @@
         this.form = document.forms[form]
         this.items = []
         this.options = []
+        this.init(form)
     }
 
     validator.prototype = {
+
+        init:function(opts){
+            if(typeof opts == 'undefined') return this
+            var self = this, form = document.forms[opts]
+            addEvent(form, 'submit', function(e){
+                preventDefault(e)
+                validateAll.call(self, self.options)
+
+            })
+        },
         add: function(opts){
             this.items.push(opts.name)
             this.options.push(opts)
@@ -49,12 +60,25 @@
         var el = this.form[opts.name], theSame
         if(opts.sameTo){ theSame = this.form[opts.sameTo]}
         inputFn = inputHandler.call(this,opts)
+        changeFn = changeHandler.call(this, opts)
         addEvent(el, 'input', inputFn)
-
+        addEvent(el, 'change', changeFn)
     }
     function inputHandler(opts){
         return function(){
             validate.call(this,opts)
+        }
+    }
+    function changeHandler(opts){
+        return function(){
+            validate.call(this,opts)
+        }
+    }
+
+    //验证所有
+    function validateAll(options){
+        for(var i = 0, len = options.length; i < len; i++){
+            validate.call(this, options[i])
         }
     }
     //验证
@@ -63,27 +87,41 @@
         if(el.value === defaultValue){ el.value = '' }
         if(opts.rules){
             for(var i = 0; i< opts.rules.length; i++){
+                var valiReg = true, valiStr = true;
                 if(typeof opts.rules[i] != 'string'){
-                    validateReg(el, opts.rules[i], opts.message[i])
+                    valiReg = validateReg(el, opts.rules[i])
+
                 }else{
-                    validateString(el, opts.rules[i], opts.message[i])
+                    valiStr = validateString(el, opts.rules[i])
+                }
+
+                if(!valiReg || !valiStr){
+                    insertMessage(el, opts.message[i])
+                    return          //遇到错误就返回一定要返回，不然很可能其他条件通过，将错误信息删除了
+                }
+                if(valiReg && valiReg){
+                    removeMessage(el)
                 }
             }
         }else if(opts.sameTo){
+            var selfValue = el.value
+            var targetValue = this.form[opts.sameTo].value
+            if(selfValue !== targetValue){
+                insertMessage(el, opts.message[0])
+            }else{
+                removeMessage(el)
+            }
 
         }
     }
 
-    function validateReg(el, rule, message){
-        if(!rule.test(el.value)){
-            insertMessage(el, message)
 
-        }else{
-            //removeMessage(el)
-        }
+
+    function validateReg(el, rule){
+        return rule.test(el.value)
     }
 
-    function validateString(el, rule, message){
+    function validateString(el, rule){
 
         var result;
         var ruleArr = /(\w+)/ig.exec(rule);
@@ -93,24 +131,13 @@
         if(ruleArr[1] === ruleArr.input){
             result = regItem[ruleArr.input](el);
 
-            if(result === false){
-                insertMessage(el, message)
-
-            }else{
-                //removeMessage(el)
-            }
-
         }else{
             //带参数的规则处理，如：maxLength
             ruleArr = /(\w+)\((\d+)/ig.exec(rule);
             result = regItem[ruleArr[1]](el, ruleArr[2]);
-            if(result === false){
-                insertMessage(el, message)
-
-            }else{
-                //removeMessage(el)
-            }
         }
+
+        return result
     }
 
     function insertMessage(el, message){
@@ -142,8 +169,6 @@
 
     }
 
-
-
     /*******工具函数******************************************/
     function addEvent(el, type, fn){
         if(typeof el.addEventListener != 'undefined'){
@@ -168,6 +193,15 @@
         }
     }
 
+    function preventDefault(e){
+        e = e || window.event
+        if(e.preventDefault){
+            e.preventDefault()
+        }else{
+            e.returnValue = false
+        }
+    }
+
 
 })(window);
 
@@ -178,8 +212,8 @@ var a = new validator('myForm')
 
 a.add({
     name:'password',
-    rules:[/\d+/,'minLength(5)','required'],
-    message:['必须为数字','太短','必须填']
+    rules:['required',/\d+/,'minLength(5)'],
+    message:['必须填','必须为数字','太短']
 }).add({
     name:'confirm-password',
     sameTo:'password',
@@ -191,7 +225,11 @@ a.add({
 }).add({
     name:'email',
     rules:[/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/],
-    message:['对不起，您填写的E-mail格式不正确！正确的格式：yourname@gmail.com。']
+    message:['对不起，您填写的E-mail格式不正确！']
+}).add({
+    name:'sure',
+    rules:['required'],
+    message:['这项必须选']
 })
 
 
