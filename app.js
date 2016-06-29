@@ -22,7 +22,7 @@
         }
 
     }
-    var inputFn;
+    var inputFn,changeFn, handlers = []
 
     var validator = function(form){
         this.form = document.forms[form]
@@ -42,11 +42,33 @@
 
             })
         },
+        //添加验证项
         add: function(opts){
             this.items.push(opts.name)
             this.options.push(opts)
             bindHandlers.call(this,opts)
             return this
+        },
+        //移除验证项目
+        remove:function(el){
+            var i = 0, n, len = this.options.length, handler, element
+            for(; i< len; i++){
+                if(el === this.options[i].name){
+                    n = i
+                    break
+                }
+            }
+
+            if(n == undefined) return this;
+            this.items.splice(n, 1);
+            opt = this.options.splice(n, 1)
+            handler = handlers.splice(n, 1)[0]
+            element = this.form[el]
+            removeMessage(element)
+
+            //移除事件
+            removeEvent(element,'input',handler['input'])
+            removeEvent(element,'change',handler['change'])
         }
     }
 
@@ -63,6 +85,12 @@
         changeFn = changeHandler.call(this, opts)
         addEvent(el, 'input', inputFn)
         addEvent(el, 'change', changeFn)
+
+        handlers.push({
+            'name': opts.name,
+            'input': inputFn,
+            'changeFn': changeFn
+        })
     }
     function inputHandler(opts){
         return function(){
@@ -180,6 +208,16 @@
         }
     }
 
+    function removeEvent(el,type,fn){
+        if(typeof el.removeEventListener != 'undefined'){
+            el.removeEventListener(type,fn,false)
+        }else if(typeof el.detachEvent != 'undefined'){
+            el.detachEvent('on'+type,fn)
+        }else{
+            el['on'+type] = null
+        }
+    }
+
     function hasClass(el, oClass){
         oClass = ' ' + oClass + ' '
         return (' ' + el.className + ' ').indexOf(oClass) > -1
@@ -231,7 +269,6 @@ a.add({
     rules:['required'],
     message:['这项必须选']
 })
-
 
 
 
