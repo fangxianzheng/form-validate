@@ -28,19 +28,28 @@
         this.form = document.forms[form]
         this.items = []
         this.options = []
+        this.valid
         this.init(form)
     }
 
     validator.prototype = {
 
         init:function(opts){
+            var se
             if(typeof opts == 'undefined') return this
             var self = this, form = document.forms[opts]
             addEvent(form, 'submit', function(e){
                 preventDefault(e)
                 validateAll.call(self, self.options)
+                self.valid = document.getElementsByClassName('errorMessage').length === 0
 
             })
+            addEvent(form.submit, 'click', function(e){
+                preventDefault(e)
+                validateAll.call(self, self.options)
+                self.valid = document.getElementsByClassName('errorMessage').length === 0
+            })
+
         },
         //添加验证项
         add: function(opts){
@@ -126,7 +135,7 @@
                 if(!valiReg || !valiStr){   //验证未通过
                     insertMessage(el, opts.message[i])
                     if(opts.callback){
-                        opts.callback(el, document.getElementsByClassName(opts.name + '_errorMessage'))
+                        opts.callback(el, document.getElementsByClassName(opts.name + '_errorMessage')[0])
                     }
                     return          //遇到错误就返回一定要返回，不然很可能其他条件通过，将错误信息删除了
                 }
@@ -257,6 +266,7 @@ a.add({
     rules:['required',/\d+/,'minLength(5)'],
     message:['必须填','必须为数字','太短'],
     callback:function(el, errorEl){
+       errorEl.style.cssText = 'color:red;'
 
     }
 }).add({
@@ -276,24 +286,47 @@ a.add({
     rules:['required'],
     message:['这项必须选']
 })
+a.remove('email')
+a.add({
+    name:'email',
+    rules:[/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/],
+    message:['对不起，您填写的E-mail格式不正确！']
+})
 
-
+document.getElementById('submit').addEventListener('click',function(){
+    console.log(a.valid)
+})
 
 
 
 
 /*
-* opts.beforeSubmit
-* opts.target
-* opts.sameTo
-*opts.beforeFocus
-*opts.beforeBlur
-*opts.afterBlur
-*opts.afterChange
-*opts.onkeypress
-*opts.action
-*opts.rule_type
-*opts.rule
+*
+* new validator(formId or formName)
+*
+* .add({
+*   name: string,必须
+*   rules: arr,必须
+*   message: arr,必须
+*   sameTo:   可选
+*   callback: 可选
+* })
+*
+* .remove( inputName )  移除某个验证项
+*
+*。.valid    Booleans    判断验证是否通过
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
 *
 *
 * */
