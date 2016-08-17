@@ -148,6 +148,10 @@
             var targetValue = this.form[opts.sameTo].value
             if(selfValue !== targetValue){
                 insertMessage(el, opts.message[0])
+                if(opts.callback){
+                    opts.callback(el, document.getElementsByClassName(opts.name + '_errorMessage')[0])
+                }
+                return
             }else{
                 removeMessage(el)
             }
@@ -181,14 +185,14 @@
     }
 
     function insertMessage(el, message){
-        var errorEle = document.createElement('span')
-        var parent = el.parentNode ;
-        var nodeEles = parent.getElementsByTagName('span')
-        errorEle.className = 'errorMessage ' + el.name + '_errorMessage'
+        var errorEle = document.createElement('span');
+        errorEle.className = 'errorMessage ' + el.name + '_errorMessage';
+        //var nodeEles = parent.getElementsByTagName('span')
+        var nodeEles = document.getElementsByClassName(el.name + '_errorMessage')
 
         if(nodeEles.length != 0){
             for(var i = 0; i<nodeEles.length; i++){
-                if(!hasClass(nodeEles[i], 'errorMessage')){
+                if(!hasClass(nodeEles[i], el.name + '_errorMessage')){
                     insertAfter(el, errorEle)
                 }
             }
@@ -196,7 +200,7 @@
         }else{
             insertAfter(el, errorEle)
         }
-        parent.getElementsByClassName('errorMessage')[0].innerHTML = message;
+        document.getElementsByClassName(el.name + '_errorMessage')[0].innerHTML = message;
 
     }
 

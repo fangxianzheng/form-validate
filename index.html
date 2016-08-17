@@ -57,7 +57,7 @@
             rules:['required',/^[\u2E80-\u9FFF]+$/,'maxLength(4)'],
             message:['这项必须填','必须是中文','最长不能超过4位'],
             callback:function(el, errorEl){
-
+                //document.getElementsByTagName('body')[0].appendChild(errorEl)
             }
         }).add({
             name:'password',
