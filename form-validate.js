@@ -259,43 +259,7 @@
 
 
 
-var a = new validator('myForm')
 
-a.add({
-    name:'password',
-    rules:['required',/\d+/,'minLength(5)'],
-    message:['必须填','必须为数字','太短'],
-    callback:function(el, errorEl){
-       errorEl.style.cssText = 'color:red;'
-
-    }
-}).add({
-    name:'confirm-password',
-    sameTo:'password',
-    message:['密码必须保持一致']
-}).add({
-    name:'mobile',
-    rules:[/^[1-9]\d{10}$/],
-    message:['手机号输入错误']
-}).add({
-    name:'email',
-    rules:[/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/],
-    message:['对不起，您填写的E-mail格式不正确！']
-}).add({
-    name:'sure',
-    rules:['required'],
-    message:['这项必须选']
-})
-a.remove('email')
-a.add({
-    name:'email',
-    rules:[/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/],
-    message:['对不起，您填写的E-mail格式不正确！']
-})
-
-document.getElementById('submit').addEventListener('click',function(){
-    console.log(a.valid)
-})
 
 
 

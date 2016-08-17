@@ -47,7 +47,53 @@
 
     </form>
 
+    <script src="form-validate.js"></script>
 
-    <script src="app.js"></script>
+    <script>
+        var a = new validator('myForm')
+
+        a.add({
+            name:'user',
+            rules:['required',/^[\u2E80-\u9FFF]+$/,'maxLength(4)'],
+            message:['这项必须填','必须是中文','最长不能超过4位'],
+            callback:function(el, errorEl){
+
+            }
+        }).add({
+            name:'password',
+            rules:['required',/\d+/,'minLength(5)'],
+            message:['必须填','必须为数字','太短'],
+            callback:function(el, errorEl){
+                errorEl.style.cssText = 'color:red;'
+
+            }
+        }).add({
+            name:'confirm-password',
+            sameTo:'password',
+            message:['密码必须保持一致']
+        }).add({
+            name:'mobile',
+            rules:[/^[1-9]\d{10}$/],
+            message:['手机号输入错误']
+        }).add({
+            name:'email',
+            rules:[/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/],
+            message:['对不起，您填写的E-mail格式不正确！']
+        }).add({
+            name:'sure',
+            rules:['required'],
+            message:['这项必须选']
+        })
+        a.remove('email')
+        a.add({
+            name:'email',
+            rules:[/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/],
+            message:['对不起，您填写的E-mail格式不正确！']
+        })
+
+        document.getElementById('submit').addEventListener('click',function(){
+            console.log(a.valid)
+        })
+    </script>
 </body>
 </html>
