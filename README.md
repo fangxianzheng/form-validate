@@ -97,21 +97,37 @@ form-validate表单验证
 
 * 改变提示信息的颜色 
 `
+
 .add({
+
   //////其他代码
+
   callback: function(el, errorEl){
+  
      errorEl.style.cssText = 'color:red;'
+     
   }
+  
   //////其他代码
+  
 })
+
 `
 *改变提示信息的位置
 `
 .add({
+
   //////其他代码
+
   callback: function(el, errorEl){
+  
      document.getElementsByTagName('body')[0].appendChild(errorEl)
+     
   }
+  
   //////其他代码
+  
 })
+
+`
 `
