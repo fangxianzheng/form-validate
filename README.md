@@ -12,8 +12,7 @@ form-validate表单验证
 
 ## 示例
 
-![扫一扫]()
-[表单验证实例](https://fangxianzheng.github.io/demo/FDatetime-HZC/demo1)
+[表单验证实例](https://fangxianzheng.github.io/demo/form-validate/demo1)
 
 ## 依赖
 
