@@ -50,9 +50,9 @@
     <script src="form-validate.js"></script>
 
     <script>
-        var a = new validator('myForm')
+        var ooo = new validator('myForm')
 
-        a.add({
+        ooo.add({
             name:'user',
             rules:['required',/^[\u2E80-\u9FFF]+$/,'maxLength(4)'],
             message:['这项必须填','必须是中文','最长不能超过4位'],
@@ -84,15 +84,15 @@
             rules:['required'],
             message:['这项必须选']
         })
-        a.remove('email')
-        a.add({
+        ooo.remove('email')
+        ooo.add({
             name:'email',
             rules:[/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/],
             message:['对不起，您填写的E-mail格式不正确！']
         })
 
         document.getElementById('submit').addEventListener('click',function(){
-            console.log(a.valid)
+            console.log(ooo.valid)
         })
     </script>
 </body>
