@@ -123,3 +123,7 @@ form-validate表单验证
 
 通常在`submit`表单的方法中，判断表单是否通过验证，若通过为`true`，否则为`false`
 
+## 参考
+
+- [zjhsd2007/validator](https://github.com/zjhsd2007/validator)
+- [jaywcjlove/validator.js](https://github.com/jaywcjlove/validator.js) 
