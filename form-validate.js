@@ -111,7 +111,6 @@
             validate.call(this,opts)
         }
     }
-
     //验证所有
     function validateAll(options){
         for(var i = 0, len = options.length; i < len; i++){
@@ -155,11 +154,8 @@
             }else{
                 removeMessage(el)
             }
-
         }
     }
-
-
 
     function validateReg(el, rule){
         return rule.test(el.value)
@@ -170,7 +166,6 @@
         var result;
         var ruleArr = /(\w+)/ig.exec(rule);
 
-
         //不带参数的规则处理
         if(ruleArr[1] === ruleArr.input){
             result = regItem[ruleArr.input](el);
@@ -180,28 +175,23 @@
             ruleArr = /(\w+)\((\d+)/ig.exec(rule);
             result = regItem[ruleArr[1]](el, ruleArr[2]);
         }
-
         return result
     }
 
     function insertMessage(el, message){
         var errorEle = document.createElement('span');
         errorEle.className = 'errorMessage ' + el.name + '_errorMessage';
-        //var nodeEles = parent.getElementsByTagName('span')
         var nodeEles = document.getElementsByClassName(el.name + '_errorMessage')
-
         if(nodeEles.length != 0){
             for(var i = 0; i<nodeEles.length; i++){
                 if(!hasClass(nodeEles[i], el.name + '_errorMessage')){
                     insertAfter(el, errorEle)
                 }
             }
-
         }else{
             insertAfter(el, errorEle)
         }
         document.getElementsByClassName(el.name + '_errorMessage')[0].innerHTML = message;
-
     }
 
     function removeMessage(el){
@@ -211,7 +201,6 @@
             parent = errorEle.parentNode;
             parent.removeChild(errorEle)
         }
-
     }
 
     /*******工具函数******************************************/
@@ -224,7 +213,6 @@
             el['on' + type] = fn
         }
     }
-
     function removeEvent(el,type,fn){
         if(typeof el.removeEventListener != 'undefined'){
             el.removeEventListener(type,fn,false)
@@ -234,12 +222,10 @@
             el['on'+type] = null
         }
     }
-
     function hasClass(el, oClass){
         oClass = ' ' + oClass + ' '
         return (' ' + el.className + ' ').indexOf(oClass) > -1
     }
-
     function insertAfter(el, errorEle){
         if(el.nextSibling){
             el.parentNode.insertBefore(errorEle, el.nextSibling)
@@ -247,7 +233,6 @@
             el.parentNode.appendChild(errorEle)
         }
     }
-
     function preventDefault(e){
         e = e || window.event
         if(e.preventDefault){
@@ -257,15 +242,7 @@
         }
     }
 
-
 })(window);
-
-
-
-
-
-
-
 
 
 /*
@@ -283,17 +260,6 @@
 * .remove( inputName )  移除某个验证项
 *
 *。.valid    Booleans    判断验证是否通过
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
 *
 *
 *
