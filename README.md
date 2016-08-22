@@ -8,6 +8,8 @@ form-validate表单验证
 ## 截图
 
 ![截图1](https://fangxianzheng.github.io/demo/Mvalidate/demo1-screenshot1.png)
+
+
 ![截图2](https://fangxianzheng.github.io/demo/Mvalidate/demo1-screenshot2.png)
 ## 示例
 
