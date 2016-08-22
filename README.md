@@ -1,18 +1,13 @@
 # form-validate
-form-validate 移动端表单验证
+form-validate表单验证
 
 ## 简介
 
 表单验证控件，无任何依赖
 
-## 截图
-
-![截图1](https://fangxianzheng.github.io/demo/Mvalidate/demo1-screenshot1.png)    ![截图2](https://fangxianzheng.github.io/demo/Mvalidate/demo1-screenshot2.png)
-
 ## 示例
 
-![扫一扫](https://fangxianzheng.github.io/demo/Mvalidate/demo1-QR.png)
-[表单验证实例](https://fangxianzheng.github.io/demo/Mvalidate/demo1.html)
+[表单验证实例](https://fangxianzheng.github.io/demo/form-validate/demo1.html)
 
 ## 依赖
 
@@ -123,9 +118,12 @@ form-validate 移动端表单验证
 
 移除一个验证项，参数为input的内容
 
-#### `.valid()` 判断是否通过验证，返回值值为`true`或`false`
+#### `.valid` 判断是否通过验证，值为`true`或`false`
 
-通常在`submit`表单的方法中，判断表单是否通过验证，若通过返回值为`true`，否则为`false`
-`.valid()`是必须调用的方法，相当于'开始验证'的意思。
+通常在`submit`表单的方法中，判断表单是否通过验证，若通过值为`true`，否则为`false`
 
+## 参考
+
+- [zjhsd2007/validator](https://github.com/zjhsd2007/validator)
+- [jaywcjlove/validator.js](https://github.com/jaywcjlove/validator.js)
 
