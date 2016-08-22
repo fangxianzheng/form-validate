@@ -1,5 +1,5 @@
 # form-validate
-form-validate表单验证
+form-validate 移动端表单验证
 
 ## 简介
 
