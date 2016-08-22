@@ -7,13 +7,12 @@ form-validate表单验证
 
 ## 截图
 
-![截图1](https://fangxianzheng.github.io/demo/Mvalidate/demo1-screenshot1.png)
+![截图1](https://fangxianzheng.github.io/demo/Mvalidate/demo1-screenshot1.png)    ![截图2](https://fangxianzheng.github.io/demo/Mvalidate/demo1-screenshot2.png)
 
-
-![截图2](https://fangxianzheng.github.io/demo/Mvalidate/demo1-screenshot2.png)
 ## 示例
 
-[表单验证实例](https://fangxianzheng.github.io/demo/form-validate/demo1)
+![扫一扫](https://fangxianzheng.github.io/demo/Mvalidate/demo1-QR.png)
+[表单验证实例](https://fangxianzheng.github.io/demo/Mvalidate/demo1.html)
 
 ## 依赖
 
