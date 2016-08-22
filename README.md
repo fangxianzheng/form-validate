@@ -5,7 +5,10 @@ form-validate表单验证
 
 表单验证插件，无任何依赖
 
+## 截图
 
+![截图1](https://fangxianzheng.github.io/demo/Mvalidate/demo1-screenshot1.png)
+![截图2](https://fangxianzheng.github.io/demo/Mvalidate/demo1-screenshot2.png)
 ## 示例
 
 [表单验证实例](https://fangxianzheng.github.io/demo/form-validate/demo1)
